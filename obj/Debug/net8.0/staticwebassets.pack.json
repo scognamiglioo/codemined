@@ -1,0 +1,57 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\wonuc\\OneDrive\\Área de Trabalho\\learncode\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\learncode.bundle.scp.css",
+      "PackagePath": "staticwebassets\\learncode.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\wonuc\\OneDrive\\Área de Trabalho\\learncode\\wwwroot\\Creamer Soda.otf",
+      "PackagePath": "staticwebassets\\Creamer Soda.otf"
+    },
+    {
+      "Id": "C:\\Users\\wonuc\\OneDrive\\Área de Trabalho\\learncode\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\wonuc\\OneDrive\\Área de Trabalho\\learncode\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\wonuc\\OneDrive\\Área de Trabalho\\learncode\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\wonuc\\OneDrive\\Área de Trabalho\\learncode\\wwwroot\\custon.css",
+      "PackagePath": "staticwebassets\\custon.css"
+    },
+    {
+      "Id": "C:\\Users\\wonuc\\OneDrive\\Área de Trabalho\\learncode\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\wonuc\\OneDrive\\Área de Trabalho\\learncode\\wwwroot\\img\\comofunciona.png",
+      "PackagePath": "staticwebassets\\img\\comofunciona.png"
+    },
+    {
+      "Id": "C:\\Users\\wonuc\\OneDrive\\Área de Trabalho\\learncode\\wwwroot\\img\\logo.png",
+      "PackagePath": "staticwebassets\\img\\logo.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.learncode.props",
+      "PackagePath": "build\\learncode.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.learncode.props",
+      "PackagePath": "buildMultiTargeting\\learncode.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.learncode.props",
+      "PackagePath": "buildTransitive\\learncode.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.learncode.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
