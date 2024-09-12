@@ -1,0 +1,108 @@
+@page "/tableusers"
+@using learncode.Models
+@using Microsoft.EntityFrameworkCore
+@using learncode.Data
+@inject learncode.Data.AppDbContext _context
+
+<h3>Lista de Usuários</h3>
+
+@if (editUser != null)
+{
+    <div>
+        <h4>Editando Usuário: @editUser.Email</h4>
+        <label>Email:</label>
+        <InputText @bind-Value="editUser.Email" />
+
+        <label>Role:</label>
+        <InputText @bind-Value="editUser.Role" />
+
+        <button class="btn btn-success" @onclick="SaveUser">Salvar</button>
+        <button class="btn btn-secondary" @onclick="CancelEdit">Cancelar</button>
+    </div>
+}
+
+@if (users == null)
+{
+    <p>Carregando usuários...</p>
+}
+else if (!users.Any())
+{
+    <p>Nenhum usuário encontrado.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditUser(user)">Editar</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteUser(user)">Excluir</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<User> users;
+    private User? editUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await _context.Users.ToListAsync();
+    }
+
+    // Método para iniciar a edição de um usuário (faz uma cópia)
+    private void EditUser(User user)
+    {
+        editUser = new User
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Role = user.Role
+        };
+    }
+
+    // Método para cancelar a edição
+    private void CancelEdit()
+    {
+        editUser = null;
+    }
+
+    // Método para salvar o usuário atualizado
+    private async Task SaveUser()
+    {
+        var userToUpdate = await _context.Users.FindAsync(editUser.Id);
+        if (userToUpdate != null)
+        {
+            userToUpdate.Email = editUser.Email;
+            userToUpdate.Role = editUser.Role;
+            await _context.SaveChangesAsync();
+        }
+
+        editUser = null;  // Resetar a edição
+        await OnInitializedAsync();  // Recarregar a lista de usuários
+    }
+
+    // Método para deletar um usuário
+    private async Task DeleteUser(User user)
+    {
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+        users.Remove(user);  // Remover da lista local também
+    }
+}

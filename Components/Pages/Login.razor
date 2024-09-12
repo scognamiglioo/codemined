@@ -1,0 +1,61 @@
+@page "/login"
+@using Microsoft.AspNetCore.Components.Forms
+@inject NavigationManager Navigation
+@inject LoginService loginService
+
+<div class="register-page">
+    <!-- Lado esquerdo com a imagem -->
+    <div class="register-image">
+        <img src="img/login.png" alt="Imagem de cadastro">
+    </div>
+
+    <!-- Lado direito com o formulário -->
+    <div class="register-form">
+        <EditForm Model="@userData" OnValidSubmit="@HandleValidSubmit">
+            <h1 class="pangolin-regular">ENTRAR</h1>
+            <div>
+                <label for="email" class="pangolin-regular">Email</label>
+                <InputText id="email" @bind-Value="userData.Email" placeholder="Digite seu email" class="input" />
+            </div>
+            <div>
+                <label for="password" class="pangolin-regular">Senha</label>
+                <InputText id="password" @bind-Value="userData.Password" type="password" placeholder="Digite sua senha" class="input" />
+            </div>
+
+            <!-- Botões -->
+            <div class="button-group">
+                <button type="submit" class="btn-register">Entrar</button>
+                <a class="loginfo" href="/cadastro">QUERO CRIAR UMA CONTA</a>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private UserData userData = new UserData();
+    private string errorMessage = "";
+
+    private async Task HandleValidSubmit()
+    {
+        var result = await loginService.AuthenticateUserAsync(userData.Email, userData.Password);
+        if (result)
+        {
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            errorMessage = "Email ou senha inválidos.";
+        }
+    }
+
+    private void GoToCadastro()
+    {
+        Navigation.NavigateTo("/cadastro");
+    }
+
+    public class UserData
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+}
