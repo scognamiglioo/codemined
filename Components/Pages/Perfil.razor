@@ -1,0 +1,51 @@
+@page "/perfil"
+@inject NavigationManager Navigation
+@inject LoginService loginService
+@using learncode.Models
+
+<div class="profile-page">
+    <div class="profile-info">
+        <h1 class="pangolin-regular">Perfil do Usuário</h1>
+
+        <div>
+            <label class="pangolin-regular">Email:</label>
+            <span>@userData.Email</span>
+        </div>
+        <div> 
+            <label class="pangolin-regular">Senha:</label>
+            <span>@userData.Password</span>
+        </div>
+        <div>
+            <label class="pangolin-regular">Role:</label>
+            <span>@userData.Role</span>
+        </div>
+        <div class="button-group">
+            <button href="/editarperfil" class="btn-edit">Editar Perfil</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private User userData = new User();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Obter o usuário com ID 1
+        var userId = 1; // Defina o ID do usuário desejado
+        userData = await loginService.GetUserByIdAsync(userId);
+
+        
+
+        // Verificar se o usuário foi encontrado, caso contrário, redirecionar ou mostrar mensagem de erro
+        if (userData == null)
+        {
+            Navigation.NavigateTo("/error");
+        }
+    }
+
+    private void EditProfile()
+    {
+        // Navegar para a página de edição de perfil
+        Navigation.NavigateTo("/editarperfil");
+    }
+}

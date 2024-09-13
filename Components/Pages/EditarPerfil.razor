@@ -1,0 +1,69 @@
+@page "/editarperfil"
+@using Microsoft.AspNetCore.Components.Forms
+@inject NavigationManager Navigation
+@inject LoginService loginService
+@using learncode.Models
+
+<div class="edit-profile-page">
+    <div class="edit-profile-form">
+        <EditForm Model="@userData" OnValidSubmit="@HandleValidSubmit">
+            <h1 class="pangolin-regular">Editar Perfil</h1>
+            <div>
+                <label for="email" class="pangolin-regular">Email</label>
+                <InputText id="email" @bind-Value="userData.Email" placeholder="Digite seu email" class="input" />
+            </div>
+            <div>
+                <label for="password" class="pangolin-regular">Senha</label>
+                <InputText id="password" @bind-Value="userData.Password" type="password" placeholder="Digite sua senha" class="input" />
+            </div>
+
+            <!-- Botões -->
+            <div class="button-group">
+                <button href="/tableusers" type="submit" class="btn-save">Salvar</button>
+                <button type="button" class="btn-edit" @onclick="HandleEdit">Editar</button>
+                <button type="button" class="btn-delete" @onclick="HandleDelete">Excluir Conta</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private User userData = new User();
+    private int userId = 1; // Substitua com a lógica correta para obter o ID do usuário
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Carregar dados do usuário ao inicializar a página
+        userData = await loginService.GetUserByIdAsync(userId);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await loginService.UpdateUserAsync(userData);
+
+        // Redirecionar para a página de perfil ou para home após a atualização
+        Navigation.NavigateTo("/perfil");
+    }
+
+    private async Task HandleEdit()
+    {
+        // Recarregar dados do usuário para edição, se necessário
+        userData = await loginService.GetUserByIdAsync(userId);
+    }
+
+    private async Task HandleDelete()
+    {
+        // Excluir o usuário
+        if (userId != 1) // Impede a exclusão do administrador
+        {
+            await loginService.DeleteUserAsync(userId);
+            // Redirecionar para a página de login após exclusão
+            Navigation.NavigateTo("/login");
+        }
+        else
+        {
+            // Exibir uma mensagem ou notificação sobre a impossibilidade de excluir o administrador
+            Console.WriteLine("Não é possível excluir o administrador.");
+        }
+    }
+}

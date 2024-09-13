@@ -1,0 +1,73 @@
+@page "/cadastro"
+@using Microsoft.AspNetCore.Components.Forms
+@inject NavigationManager Navigation
+@inject LoginService loginService
+@rendermode InteractiveServer
+@using learncode.Models
+
+<div class="register-page">
+    <!-- Lado esquerdo com a imagem -->
+    <div class="register-image">
+        <img src="img/login.png" alt="Imagem de cadastro">
+    </div>
+
+    <!-- Lado direito com o formulário -->
+    <div class="register-form">
+        <EditForm Model="@userData" FormName="userRegistrationForm">
+            <h1 class="pangolin-regular">Cadastro</h1>
+            
+            <div>
+                <label for="email" class="pangolin-regular">Email</label>
+                <InputText id="email" @bind-Value="userData.Email" placeholder="Digite seu email" class="input" />
+            </div>
+
+            <div>
+                <label for="password" class="pangolin-regular">Senha</label>
+                <InputText id="password" @bind-Value="userData.Password" type="password" placeholder="Digite sua senha" class="input" />
+            </div>
+
+            <!-- Botões -->
+            <div class="button-group">
+                <button type="submit" class="btn-register" @onclick= " (()=>HandleValidSubmit(userData)) ">Cadastrar</button>
+                <a class="loginfo" href="/login">Tenho conta</a>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private User userData = new User();
+
+private async Task HandleValidSubmit(User userData)
+{
+    // Log para verificar se os dados estão corretos
+    Console.WriteLine($"Email preenchido: {userData.Email}");
+    Console.WriteLine($"Senha preenchida: {userData.Password}");
+
+    if (!string.IsNullOrEmpty(userData.Email) && !string.IsNullOrEmpty(userData.Password))
+    {
+        try
+        {
+            await loginService.RegisterUserAsync(userData.Email, userData.Password, "User");
+            Navigation.NavigateTo("/tableusers");
+        }
+        catch (Exception ex)
+        {
+            // Exibir erros no console, caso algo dê errado no loginService
+            Console.WriteLine($"Erro ao registrar usuário: {ex.Message}");
+        }
+    }
+    else
+    {
+        Console.WriteLine("Campos de email ou senha estão nulos ou vazios.");
+    }
+}
+
+
+
+    private void GoToLogin()
+    {
+        // Redirecionar para a página de login
+        Navigation.NavigateTo("/login");
+    }
+}
