@@ -1,0 +1,138 @@
+@page "/aprendendopython"
+@using Microsoft.AspNetCore.Components.Forms
+
+<nav class="navbar">
+    <div class="navbar-content">
+        <!-- Logo na ponta esquerda -->
+        <img src="img/logo.png" alt="Logo" class="navbar-logo" />
+
+        <!-- Lista de navegação na direita -->
+        <ul class="navbar-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">Sobre Nós</a></li>
+            <li><a href="/cadastro">Entrar</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="title"> 
+    <h1>APRENDENDO PYTHON</h1>
+</div>
+
+<div class="steps card-container">
+    <div class="cardcont2">
+        <h2 class="pangolin-regular">Passos para criar uma calculadora em Python</h2>
+        <ol>
+            <li>
+                <strong>Passo 1: Criar um arquivo Python</strong>
+                <p>Abra um editor de texto (por exemplo, VS Code ou Sublime Text) e crie um arquivo chamado <code>calculadora.py</code>.</p>
+            </li>
+            <li>
+                <strong>Passo 2: Criar uma função para cada operação</strong>
+                <p>Defina uma função para cada operação matemática que você deseja que a calculadora realize (adição, subtração, multiplicação e divisão). Exemplo:</p>
+                <pre class="pangolin-regular">
+def adicionar(x, y):
+    return x + y
+
+def subtrair(x, y):
+    return x - y
+
+def multiplicar(x, y):
+    return x * y
+
+def dividir(x, y):
+    if y != 0:
+        return x / y
+    else:
+        return "Erro: Divisão por zero"
+                </pre>
+            </li>
+            <li>
+                <strong>Passo 3: Solicitar entrada do usuário</strong>
+                <p>Use a função <code>input()</code> para capturar as escolhas do usuário (números e operação).</p>
+                <pre class="pangolin-regular">
+# Solicitar entrada do usuário
+print("Selecione a operação:")
+print("1. Adição")
+print("2. Subtração")
+print("3. Multiplicação")
+print("4. Divisão")
+
+escolha = input("Digite a escolha (1/2/3/4): ")
+num1 = float(input("Digite o primeiro número: "))
+num2 = float(input("Digite o segundo número: "))
+                </pre>
+            </li>
+            <li>
+                <strong>Passo 4: Executar a operação com base na escolha</strong>
+                <p>Use uma estrutura condicional para chamar a função correspondente à escolha do usuário.</p>
+                <pre class="pangolin-regular">
+if escolha == '1':
+    print(f"{num1} + {num2} = {adicionar(num1, num2)}")
+elif escolha == '2':
+    print(f"{num1} - {num2} = {subtrair(num1, num2)}")
+elif escolha == '3':
+    print(f"{num1} * {num2} = {multiplicar(num1, num2)}")
+elif escolha == '4':
+    print(f"{num1} / {num2} = {dividir(num1, num2)}")
+else:
+    print("Opção inválida!")
+                </pre>
+            </li>
+            <li>
+                <strong>Passo 5: Executar a calculadora</strong>
+                <p>Salve o arquivo e execute o programa no terminal com o comando <code>python calculadora.py</code>.</p>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<style>
+.steps {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.cardcont {
+    width: 80%;
+    background-color: #b5c99a;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px grey;
+    font-family: 'Creamer', sans-serif;
+}
+
+.steps h2 {
+    text-align: center;
+    font-family: 'Creamer', sans-serif;
+}
+
+.steps ol {
+    font-size: 1.1em;
+    line-height: 1.8em;
+}
+
+.steps pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.95em;
+    overflow-x: auto;
+    font-family: 'Creamer', sans-serif;
+}
+
+.steps strong {
+    font-family: 'Creamer', sans-serif;
+}
+
+.cardcont2 {
+    width: 80%;
+    background-color: #ccd5ae;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px grey;
+    font-family: 'Creamer', sans-serif;
+}
+
+</style>

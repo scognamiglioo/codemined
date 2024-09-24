@@ -1,0 +1,147 @@
+@page "/tableusers"
+@using learncode.Models
+@using Microsoft.EntityFrameworkCore
+@using learncode.Data
+@inject StateContainer State
+@rendermode InteractiveServer
+@inject learncode.Data.AppDbContext _context
+
+
+
+<nav class="navbar">
+    <div class="navbar-content">
+        <!-- Logo na ponta esquerda -->
+        <img src="img/logo.png" alt="Logo" class="navbar-logo" />
+
+        <!-- Lista de navegação na direita -->
+        <ul class="navbar-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/tableusers">Usuários</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+
+@if (State.EditUser != null)
+{
+    <div>
+        <h4>Editando Usuário: @State.EditUser.Email</h4>
+        <label>Email:</label>
+        <InputText @bind-Value="State.EditUser.Email" />
+
+        <label>Senha:</label>
+        <InputText @bind-Value="State.EditUser.Password" />
+
+        <button class="btn btn-success" @onclick="SaveUser">Salvar</button>
+        <button class="btn btn-secondary" @onclick="CancelEdit">Cancelar</button>
+    </div>
+}
+
+@if (State.Users == null)
+{
+    <p>Carregando usuários...</p>
+}
+else if (!State.Users.Any())
+{
+    <p>Nenhum usuário encontrado.</p>
+}
+else
+{
+   
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Senha</th>
+                <th>Role</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in State.Users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Email</td>
+                    <td>@user.Password</td>
+                    <td>@user.Role</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditUser(user)">Editar</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteUser(user.Id)">Excluir</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    // Carregar a lista de usuários ao inicializar a página
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUsers();
+        State.OnChange += StateHasChanged;
+    }
+
+    // Carregar usuários do banco de dados e armazená-los no StateContainer
+    private async Task LoadUsers()
+    {
+        State.Users = await _context.Users.ToListAsync();
+        State.NotifyStateChanged();
+    }
+
+    // Iniciar o processo de edição de um usuário
+    private void EditUser(User user)
+    {
+        State.EditUser = user.Clone(); // Usando o método Clone
+        State.NotifyStateChanged();
+    }
+
+    // Cancelar a edição do usuário
+    private void CancelEdit()
+    {
+        State.EditUser = null;
+        State.NotifyStateChanged();
+    }
+
+    // Salvar alterações de um usuário (atualizar ou criar novo)
+    private async Task SaveUser()
+    {
+        if (State.EditUser.Id == 0) // Novo usuário
+        {
+            _context.Users.Add(State.EditUser);
+        }
+        else // Atualizar usuário existente
+        {
+            var existingUser = await _context.Users.FindAsync(State.EditUser.Id);
+            if (existingUser != null)
+            {
+                existingUser.Email = State.EditUser.Email;
+                existingUser.Password = State.EditUser.Password;
+                _context.Users.Update(existingUser);
+            }
+        }
+
+        await _context.SaveChangesAsync();
+        State.EditUser = null;
+        await LoadUsers(); // Recarrega a lista de usuários
+        State.NotifyStateChanged();
+    }
+
+    // Excluir um usuário
+    private async Task DeleteUser(int userId)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user != null && user.Role != "admin") // Evitar exclusão de administradores
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            await LoadUsers(); // Recarrega a lista de usuários
+            State.NotifyStateChanged();
+        }
+    }
+
+
+}

@@ -1,0 +1,96 @@
+@page "/editarperfil"
+@using learncode.Models
+@using Microsoft.EntityFrameworkCore
+@using learncode.Data
+@inject LoginService loginService
+@inject NavigationManager Navigation
+@inject learncode.Data.AppDbContext _context
+@inject StateContainer State
+@rendermode InteractiveServer
+
+<nav class="navbar">
+    <div class="navbar-content">
+        <!-- Logo na ponta esquerda -->
+        <img src="img/logo.png" alt="Logo" class="navbar-logo" />
+
+        <!-- Lista de navegação na direita -->
+        <ul class="navbar-links">
+            <li><a href="/">Home</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="edit-profile-page">
+    <div class="edit-profile-form">
+        <EditForm Model="@userData" OnValidSubmit="SaveProfile">
+            <h1 class="pangolin-regular">Editar Perfil</h1>
+            <div>
+                <label for="email" class="pangolin-regular">Email</label>
+                <InputText id="email" @bind-Value="userData.Email" placeholder="Digite seu email" class="input" />
+            </div>
+            <div>
+                <label for="password" class="pangolin-regular">Senha</label>
+                <InputText id="password" @bind-Value="userData.Password" type="password" placeholder="Digite sua senha" class="input" />
+            </div>
+
+            <!-- Botões -->
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <button class="btn btn-danger" @onclick="DeleteAccount">Excluir Conta</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private User userData = new User();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Carrega os dados do usuário atual
+        if (State.CurrentUserId != 0)
+        {
+            var currentUser = await _context.Users.FindAsync(State.CurrentUserId);
+            if (currentUser != null)
+            {
+                userData = currentUser; // Preenche o formulário com os dados atuais do usuário
+            }
+        }
+    }
+
+    // Salvar as alterações do perfil do usuário
+    private async Task SaveProfile()
+    {
+        // Marca a entidade como modificada
+        _context.Entry(userData).State = EntityState.Modified;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+            // Redireciona após salvar
+            Navigation.NavigateTo("/");
+        }
+        catch (DbUpdateException ex)
+        {
+            // Adicionar lógica para lidar com falhas de atualização, se necessário
+            Console.WriteLine(ex.Message);
+        }
+
+        // Confirmar a atualização do perfil
+        State.NotifyStateChanged();
+    }
+
+    // Excluir a conta do usuário
+    private async Task DeleteAccount()
+    {
+        var userToDelete = await _context.Users.FindAsync(userData.Id);
+        if (userToDelete != null)
+        {
+            _context.Users.Remove(userToDelete);
+            await _context.SaveChangesAsync();
+
+            // Redireciona para a página de login após exclusão
+            Navigation.NavigateTo("/login");
+        }
+    }
+}
