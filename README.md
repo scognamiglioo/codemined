@@ -1,6 +1,6 @@
 # CODEMINED
 
-Foi um projeto desenvolvido pelos alunos Julia V., Caio V. e Pedro H. B. para matéria **Desenvolvimento Para Ambiente Microsoft.net** no **Instituto Federal do Norte de Minas Gerais - Campus Montes Claros**.
+Foi um projeto desenvolvido pelos alunos Julia V., Caio V. e Pedro H. B. para matéria **Desenvolvimento Para Ambiente Microsoft.net**.
 
 ## Definição do projeto 
 Neste trabalho, os estudantes poderão ampliar os conhecimentos adquiridos na disciplina de Desenvolvimento .NET. O objetivo é  criar um produto que aborde uma necessidade específica na nossa comunidade local (comunidade escolar/comunidade do entorno do Campus), de forma a simular o processo completo, desde a pesquisa inicial até a implementação prática e o impacto na comunidade.
